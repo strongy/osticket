@@ -17,11 +17,13 @@ RUN git clone --branch v1.18.4 --depth 1 https://github.com/osTicket/osTicket.gi
 # Keep a pristine copy of include/ for the entrypoint to seed the bind mount from
 RUN cp -a include /var/www/html/include-orig
 
-RUN sed -ri -e 's,80,443,' /etc/apache2/sites-available/000-default.conf
-RUN sed -i -e '/^<\/VirtualHost>/i SSLEngine on' /etc/apache2/sites-available/000-default.conf
-RUN sed -i -e '/^<\/VirtualHost>/i SSLCertificateFile /cert/cert.pem' /etc/apache2/sites-available/000-default.conf
-RUN sed -i -e '/^<\/VirtualHost>/i SSLCertificateKeyFile /cert/privkey.pem' /etc/apache2/sites-available/000-default.conf
-RUN sed -i -e '/^<\/VirtualHost>/i SSLCertificateChainFile /cert/fullchain.pem' /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite ssl \
+    && a2ensite default-ssl \
+    && sed -i \
+        -e 's#SSLCertificateFile\s.*#SSLCertificateFile /cert/cert.pem#' \
+        -e 's#SSLCertificateKeyFile\s.*#SSLCertificateKeyFile /cert/privkey.pem#' \
+        -e '/SSLCertificateKeyFile/a\    SSLCertificateChainFile /cert/fullchain.pem' \
+        /etc/apache2/sites-available/default-ssl.conf
 
 # Add core osTicket plugins into include-orig/plugins
 COPY plugins/ /var/www/html/include-orig/plugins/
