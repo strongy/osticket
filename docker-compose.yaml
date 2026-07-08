@@ -16,6 +16,7 @@ services:
       - TZ=Europe/London
       - PUID=1000
       - PGID=65534
+      - hostname=osticket
     restart: unless-stopped
     networks:
       - t2_proxy
@@ -31,6 +32,7 @@ services:
       - MYSQL_PASSWORD=osticket
       - PUID=1000
       - PGID=65534
+      - hostname=osticket-db
     volumes:
       - osticket-db-data:/var/lib/mysql
     restart: unless-stopped
@@ -51,6 +53,7 @@ services:
       - TZ=Europe/London
       - PUID=1000
       - PGID=65534
+      - hostname=portainer
     volumes:
       - /home/peter/docker/portainer/data/:/data/:rw
       - /var/run/docker.sock:/var/run/docker.sock:rw
@@ -71,6 +74,7 @@ services:
       - TZ=Europe/London
       - PUID=1000
       - PGID=65534
+      - hostname=dozzle
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     security_opt:
