@@ -7,6 +7,7 @@ services:
     container_name: osticket
     ports:
       - "38412:80"
+      - "38413:443"
     volumes:
       - /mnt/user/appdata/osticket/config:/var/www/html/include
       - /mnt/user/appdata/osticket/attachments:/var/www/html/attachments
