@@ -1,0 +1,4 @@
+<RequireAny>
+    Require local
+    Require ip 192.168.0.1
+</RequireAny>
