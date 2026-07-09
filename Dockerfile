@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install -j1 mysqli mbstring gd intl opcache imap
 RUN pecl install apcu && docker-php-ext-enable apcu
-RUN a2enmod rewrite ssl
+RUN a2enmod rewrite
 WORKDIR /var/www/html
 RUN git clone --branch v1.18.4 --depth 1 https://github.com/osTicket/osTicket.git . \
     && cp include/ost-sampleconfig.php include/ost-config.php \
